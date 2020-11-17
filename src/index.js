@@ -79,10 +79,6 @@ registerBlockType( 'create-block/collage', {
 		   default: 2 
 		},
 
-		galleryCaption: {
-			type: 'string',
-			default: 'Write Caption...'
-		}
 	},
 
 	/**

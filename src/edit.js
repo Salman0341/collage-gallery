@@ -9,7 +9,7 @@ import './editor.scss';
 const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 function Edit(props) {
-	const { images, column, galleryCaption } = props.attributes;
+	const { images, column } = props.attributes;
 
 	const [ galleryImages, setGalleryImages ] = useState([]);
 
@@ -18,7 +18,6 @@ function Edit(props) {
 			const imagesWithCustomProps = images.map((image) => {
 				return {
 					...image,
-					isActive: false // toolbar dikhany k lye
 				};
 			});
 
@@ -26,6 +25,7 @@ function Edit(props) {
 		},
 		[ images ]
 	);
+
 
 	const activeToolbarHandler = (id) => {
 		const newGalleryImages = galleryImages.map((galleryITem) => {
@@ -46,8 +46,8 @@ function Edit(props) {
 	};
 
 	const deleteImageHandler = (id) => {
-		const deleteImage = galleryImages.filter((i) => i.id !== id);
-		setGalleryImages(deleteImage);
+		const newImages = galleryImages.filter((i) => i.id !== id);
+		props.setAttributes({ images: newImages });
 	};
 
 	const handleReplace = (id, newImage) => {
@@ -75,7 +75,7 @@ function Edit(props) {
 			newGalleryImages[currentIndex] = nextImage;
 			newGalleryImages[newIndex] = currentImage;
 
-			setGalleryImages(newGalleryImages);
+			props.setAttributes({ images: newGalleryImages });
 		}
 	};
 
@@ -90,20 +90,37 @@ function Edit(props) {
 		if (currentImageIndex !== 0) {
 			newGalleryImagesLeft[currentImageIndex] = nextImageLeft;
 			newGalleryImagesLeft[newImageIndex] = currentImageLeft;
-			setGalleryImages(newGalleryImagesLeft);
+			props.setAttributes({ images: newGalleryImagesLeft })
 		}
 	};
-    
+
+	const handleCaption = (id, newCaption) => {
+		const newGalleryImages = galleryImages.map((image) => {
+			if (id === image.id) {
+				return {
+					...image,
+					caption: newCaption,
+				};
+			}
+
+			return image;
+		});
+
+		props.setAttributes({ images: newGalleryImages });
+	};
+
 	return (
 		<Fragment>
 			<figure className="wp-collage-gallery">
-				{isEmpty(images) && <MediaPlaceholder
-				    icon="format-gallery"
-					onSelect={(newImage) => props.setAttributes({images: newImage})}
-					allowedTypes={ALLOWED_MEDIA_TYPES}
-					multiple={true}
-					labels={{ title: 'Collage Gallery'}}>
-				</MediaPlaceholder>}
+				{isEmpty(images) && (
+					<MediaPlaceholder
+						icon="format-gallery"
+						onSelect={(newImage) => props.setAttributes({ images: newImage })}
+						allowedTypes={ALLOWED_MEDIA_TYPES}
+						multiple={true}
+						labels={{ title: 'Collage Gallery' }}
+					/>
+				)}
 				<ul className={`blocks-collage-grid column_${column}`}>
 					{galleryImages.map((image, idx) => {
 						const { url, id, isActive } = image;
@@ -112,46 +129,48 @@ function Edit(props) {
 								<li key={idx} className="blocks-collage-item">
 									<img onClick={() => activeToolbarHandler(id)} src={url} />
 									{isActive && (
-										<Fragment> 
-										<div className="cwp_toolbar_Wrapper">
-											<div className="cwp_left_toolbar_wrapper">
-												<IconButton
-												    disabled={0 === idx ? true : false}
-													icon="arrow-left-alt2"
-													isPrimary
-													onClick={() => moveLeft(id)}
-												/>
-												<IconButton
-													disabled={ idx === (galleryImages.length - 1) }
-													icon="arrow-right-alt2"
-													isPrimary
-													onClick={() => moveRight(id)}
-												/>
-											</div>
-
-											<div className="cwp_right_toolbar_wrapper">
-												<MediaUploadCheck>
-													<MediaUpload
-														onSelect={(newEditImage) => handleReplace(id, newEditImage)}
-														allowedTypes={ALLOWED_MEDIA_TYPES}
-														render={({ open }) => (
-															<IconButton icon="edit" isPrimary onClick={open} />
-														)}
+										<Fragment>
+											<div className="cwp_toolbar_Wrapper">
+												<div className="cwp_left_toolbar_wrapper">
+													<IconButton
+														disabled={0 === idx ? true : false}
+														icon="arrow-left-alt2"
+														isPrimary
+														onClick={() => moveLeft(id)}
 													/>
-												</MediaUploadCheck>
-												<IconButton
-													onClick={() => deleteImageHandler(id)}
-													isPrimary
-													icon="trash"
+													<IconButton
+														disabled={idx === galleryImages.length - 1}
+														icon="arrow-right-alt2"
+														isPrimary
+														onClick={() => moveRight(id)}
+													/>
+												</div>
+
+												<div className="cwp_right_toolbar_wrapper">
+													<MediaUploadCheck>
+														<MediaUpload
+															onSelect={(newEditImage) => handleReplace(id, newEditImage)}
+															allowedTypes={ALLOWED_MEDIA_TYPES}
+															render={({ open }) => (
+																<IconButton icon="edit" isPrimary onClick={open} />
+															)}
+														/>
+													</MediaUploadCheck>
+													<IconButton
+														onClick={() => deleteImageHandler(id)}
+														isPrimary
+														icon="trash"
+													/>
+												</div>
+											</div>
+											<div className="cwp_caption_wrapper">
+												<RichText
+													value={image.caption}
+													placeholder={'Write Caption...'}
+													onChange={(newGalleryCaption) =>
+														handleCaption(id, newGalleryCaption)}
 												/>
 											</div>
-										</div>
-										<div className="cwp_caption_wrapper">
-											<RichText 
-											 value={galleryCaption}
-											 onChange={(newGalleryCaption) => props.setAttributes({galleryCaption:newGalleryCaption})}
-											/>
-										</div>
 										</Fragment>
 									)}
 								</li>

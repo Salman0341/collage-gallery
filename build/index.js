@@ -374,8 +374,7 @@ var ALLOWED_MEDIA_TYPES = ['image'];
 function Edit(props) {
   var _props$attributes = props.attributes,
       images = _props$attributes.images,
-      column = _props$attributes.column,
-      galleryCaption = _props$attributes.galleryCaption;
+      column = _props$attributes.column;
 
   var _useState = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["useState"])([]),
       _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_1___default()(_useState, 2),
@@ -384,10 +383,7 @@ function Edit(props) {
 
   Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["useEffect"])(function () {
     var imagesWithCustomProps = images.map(function (image) {
-      return _objectSpread(_objectSpread({}, image), {}, {
-        isActive: false // toolbar dikhany k lye
-
-      });
+      return _objectSpread({}, image);
     });
     setGalleryImages(imagesWithCustomProps);
   }, [images]);
@@ -408,10 +404,12 @@ function Edit(props) {
   };
 
   var deleteImageHandler = function deleteImageHandler(id) {
-    var deleteImage = galleryImages.filter(function (i) {
+    var newImages = galleryImages.filter(function (i) {
       return i.id !== id;
     });
-    setGalleryImages(deleteImage);
+    props.setAttributes({
+      images: newImages
+    });
   };
 
   var handleReplace = function handleReplace(id, newImage) {
@@ -439,7 +437,9 @@ function Edit(props) {
     if (typeof nextImage !== 'undefined') {
       newGalleryImages[currentIndex] = nextImage;
       newGalleryImages[newIndex] = currentImage;
-      setGalleryImages(newGalleryImages);
+      props.setAttributes({
+        images: newGalleryImages
+      });
     }
   };
 
@@ -455,8 +455,25 @@ function Edit(props) {
     if (currentImageIndex !== 0) {
       newGalleryImagesLeft[currentImageIndex] = nextImageLeft;
       newGalleryImagesLeft[newImageIndex] = currentImageLeft;
-      setGalleryImages(newGalleryImagesLeft);
+      props.setAttributes({
+        images: newGalleryImagesLeft
+      });
     }
+  };
+
+  var handleCaption = function handleCaption(id, newCaption) {
+    var newGalleryImages = galleryImages.map(function (image) {
+      if (id === image.id) {
+        return _objectSpread(_objectSpread({}, image), {}, {
+          caption: newCaption
+        });
+      }
+
+      return image;
+    });
+    props.setAttributes({
+      images: newGalleryImages
+    });
   };
 
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])("figure", {
@@ -529,11 +546,10 @@ function Edit(props) {
     }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])("div", {
       className: "cwp_caption_wrapper"
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__["RichText"], {
-      value: galleryCaption,
+      value: image.caption,
+      placeholder: 'Write Caption...',
       onChange: function onChange(newGalleryCaption) {
-        return props.setAttributes({
-          galleryCaption: newGalleryCaption
-        });
+        return handleCaption(id, newGalleryCaption);
       }
     })))));
   }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["PanelBody"], {
@@ -672,10 +688,6 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])('cre
     column: {
       type: 'Number',
       default: 2
-    },
-    galleryCaption: {
-      type: 'string',
-      default: 'Write Caption...'
     }
   },
 
