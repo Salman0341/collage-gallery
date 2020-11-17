@@ -1,0 +1,62 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+ .wp-collage-gallery, .blocks-collage-grid {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.blocks-collage-item {
+	margin: 0 16px 16px 0px !important;
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+	justify-content: center;
+	position: relative;
+}
+
+/*****css column grid***/ 
+
+/*****css column grid***/ 
+
+.blocks-collage-grid.column_2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.blocks-collage-grid.column_3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.blocks-collage-grid.column_4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.blocks-collage-grid.column_5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.blocks-collage-grid.column_6 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.blocks-collage-grid.column_7 {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.blocks-collage-grid.column_8 {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}

@@ -1,0 +1,67 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+.wp-collage-gallery, .blocks-collage-grid {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+  margin: 0; }
+
+.blocks-collage-item {
+  margin: 0 16px 16px 0px !important;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  position: relative; }
+
+/*****css column grid***/
+/*****css column grid***/
+.blocks-collage-grid.column_2 {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+  grid-template-columns: repeat(2, 1fr); }
+
+.blocks-collage-grid.column_3 {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+  grid-template-columns: repeat(3, 1fr); }
+
+.blocks-collage-grid.column_4 {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[4];
+  grid-template-columns: repeat(4, 1fr); }
+
+.blocks-collage-grid.column_5 {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[5];
+  grid-template-columns: repeat(5, 1fr); }
+
+.blocks-collage-grid.column_6 {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[6];
+  grid-template-columns: repeat(6, 1fr); }
+
+.blocks-collage-grid.column_7 {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[7];
+  grid-template-columns: repeat(7, 1fr); }
+
+.blocks-collage-grid.column_8 {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[8];
+  grid-template-columns: repeat(8, 1fr); }
+
+
+/*# sourceMappingURL=style-index.css.map*/
